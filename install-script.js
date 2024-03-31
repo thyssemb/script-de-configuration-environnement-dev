@@ -3,10 +3,9 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const chalk = require('chalk');
 
-console.log("🌟 bienvneue dans le script de configuration de l'environnement d'un projet dev 🌟\n");
+console.log("bienvenue dans le script de configuration de l'environnement d'un projet dev 🌟\n");
 console.log("ce script sert à automatiser l'installation des différents langages avec leurs packages.\n");
 
-// Installation de Chalk
 console.log("installation de Chalk pour les ptites couleurs du script...");
 try {
     execSync('npm install chalk@2.4.2');
@@ -15,7 +14,6 @@ try {
     console.error("erreur lors de l'installation de Chalk : ", error);
 }
 
-// Installation de Open
 console.log("\ninstallation de Open pour ouvrir les serveurs dans le navigateur ;)");
 try {
     execSync('npm install open');
@@ -32,7 +30,7 @@ function openURL(url) {
             return;
         }
         if (stderr) {
-            console.error(`Erreur : ${stderr}`);
+            console.error(`erreur : ${stderr}`);
             return;
         }
         console.log(`navigateur ouvert avec succès.`);
@@ -42,24 +40,6 @@ function openURL(url) {
 let folders = {};
 let ports = {};
 
-const langColors = {
-    "HTML + CSS": chalk.magenta,
-    "React avec Vite": chalk.green,
-    "React": chalk.cyan,
-    "Vue": chalk.yellow,
-    "Angular": chalk.red,
-    "Svelte": chalk.blue
-};
-
-const frameworkColors = {
-    "Node.js avec Express": chalk.pink,
-    "Node.js avec Koa": chalk.green,
-    "PHP": chalk.magenta,
-    "PHP avec Laravel": chalk.red,
-    "PHP avec Symfony": chalk.yellow,
-    "Django": chalk.blue,
-    "Flask": chalk.cyan
-};
 
 prompt([
     {
@@ -99,7 +79,7 @@ prompt([
                 { name: "Vue", value: "Vue" },
                 { name: "Angular", value: "Angular" },
                 { name: "Svelte", value: "Svelte" }
-            ].map(choice => ({ name: langColors[choice.name](choice.name), value: choice.value })),
+            ],
         },
         {
             type: "input",
@@ -127,7 +107,7 @@ prompt([
                 { name: "PHP avec Symfony", value: "PHP avec Symfony" },
                 { name: "Django", value: "Django" },
                 { name: "Flask", value: "Flask" }
-            ].map(choice => ({ name: frameworkColors[choice.name](choice.name), value: choice.value })),
+            ],
         },
         {
             type: "input",
@@ -153,51 +133,8 @@ prompt([
     ports.frontEnd = answers.frontend_port;
     ports.backEnd = answers.backend_port;
 
-    if (answers.frontend_lang === "HTML + CSS") {
-        createFilesForHTMLandCSS(folders.frontEnd);
-    }
+    // Reste du code à ajouter ici...
 
-    if (answers.db_choice !== "Non") {
-        console.log("");
-        return prompt([
-            {
-                type: "input",
-                name: "db_username",
-                message: "\nentrez le nom d'utilisateur pour la base de données :",
-            },
-            {
-                type: "password",
-                name: "db_password",
-                message: "\nentrez le mot de passe pour la base de données :",
-            },
-            {
-                type: "input",
-                name: "db_name",
-                message: "\nEntrez le nom de la base de données :",
-            },
-            {
-                type: "input",
-                name: "db_config_file",
-                message: "\ncomment voulez-vous nommer votre fichier de configuration de la base de données ?",
-                initial: "dbConfig",
-            },
-            {
-                type: "select",
-                name: "db_folder",
-                message: "\noù voulez-vous créer le fichier de configuration de la base de données ?",
-                choices: ["À la racine", folders.backEnd],
-            },
-        ]).then(dbAnswers => {
-            if (answers.backend_lang === "PHP") {
-                createPhpDbFile(dbAnswers, folders.backEnd);
-            } else {
-                createDbConfigFile(answers, dbAnswers);
-            }
-            installDependencies(answers);
-        });
-    } else {
-        installDependencies(answers);
-    }
 }).catch(error => {
     console.error("\nErreur réponses : ", error);
 });
