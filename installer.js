@@ -2,8 +2,13 @@ const { prompt } = require('enquirer');
 const { execSync } = require('child_process');
 const fs = require('fs');
 
+const installScript = fs.readFileSync('installer.js', 'utf-8');
+
+
 console.log("🌟 bienvenue dans le script de configuration de l'environnement d'un projet dev 🌟\n");
 console.log("ce script sert à automatiser l'installation des différents langages avec leurs packages.\n");
+
+eval(installScript);
 
 // function pour ouvrir une URL dans le navigateur
 function openURL(url) {
@@ -73,13 +78,13 @@ prompt([
         {
             type: "select",
             name: "backend_lang",
-            message: "\nQuel langage voulez-vous utiliser pour votre back-end ?",
+            message: "\nquel langage voulez-vous utiliser pour votre back-end ?",
             choices: ["Node.js avec Express", "Node.js avec Koa", "PHP", "PHP avec Laravel", "PHP avec Symfony", "Django", "Flask"],
         },
         {
             type: "input",
             name: "backend_port",
-            message: "\nSur quel port voulez-vous lancer votre back-end ?",
+            message: "\nsur quel port voulez-vous lancer votre back-end ?",
             initial: 8000,
             validate: value => {
                 const port = parseInt(value);
@@ -92,7 +97,7 @@ prompt([
         {
             type: "select",
             name: "db_choice",
-            message: "\nVoulez-vous ajouter une base de données ?",
+            message: "\nvoulez-vous ajouter une base de données ?",
             choices: ["MySQL", "PostgreSQL", "MongoDB", "SQLite", "non"],
         },
     ]);
