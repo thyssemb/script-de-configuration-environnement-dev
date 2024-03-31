@@ -3,9 +3,26 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const chalk = require('chalk');
 
-
-console.log("🌟 bienvenue dans le script de configuration de l'environnement d'un projet dev\n");
+console.log("🌟 bienvneue dans le script de configuration de l'environnement d'un projet dev 🌟\n");
 console.log("ce script sert à automatiser l'installation des différents langages avec leurs packages.\n");
+
+// Installation de Chalk
+console.log("installation de Chalk pour les ptites couleurs du script...");
+try {
+    execSync('npm install chalk@2.4.2');
+    console.log("chalk installé avec succès.");
+} catch (error) {
+    console.error("erreur lors de l'installation de Chalk : ", error);
+}
+
+// Installation de Open
+console.log("\ninstallation de Open pour ouvrir les serveurs dans le navigateur ;)");
+try {
+    execSync('npm install open');
+    console.log("open installé avec succès.");
+} catch (error) {
+    console.error("erreur lors de l'installation de Open : ", error);
+}
 
 // function pour ouvrir une URL dans le navigateur
 function openURL(url) {
@@ -15,7 +32,7 @@ function openURL(url) {
             return;
         }
         if (stderr) {
-            console.error(`erreur : ${stderr}`);
+            console.error(`Erreur : ${stderr}`);
             return;
         }
         console.log(`navigateur ouvert avec succès.`);
@@ -156,7 +173,7 @@ prompt([
             {
                 type: "input",
                 name: "db_name",
-                message: "\nentrez le nom de la base de données :",
+                message: "\nEntrez le nom de la base de données :",
             },
             {
                 type: "input",
