@@ -1,9 +1,24 @@
 const { prompt } = require('enquirer');
-const fs = require('fs');
 const { execSync } = require('child_process');
+const fs = require('fs');
 
-console.log("🌟 bienvenue dans le script de configuration de l'environnement d'un projet dev  🌟\n");
-console.log("ce script sert à automatiser l'installation des différents langages avec leur package\n");
+console.log("🌟 bienvenue dans le script de configuration de l'environnement d'un projet dev 🌟\n");
+console.log("ce script sert à automatiser l'installation des différents langages avec leurs packages.\n");
+
+// function pour ouvrir une URL dans le navigateur
+function openURL(url) {
+    exec(`open ${url}`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`erreur lors de l'ouverture de l'URL : ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.error(`erreur : ${stderr}`);
+            return;
+        }
+        console.log(`navigateur ouvert avec succès.`);
+    });
+}
 
 let folders = {};
 let ports = {};
@@ -27,7 +42,7 @@ prompt([
 
     folderNames.forEach(folderName => {
         fs.mkdirSync(folderName, { recursive: true });
-        console.log(`\nle dossier ${folderName} a été créé ;)`);
+        console.log(`Le dossier ${folderName} a été créé.\n`);
     });
 
     folders.frontEnd = folderNames[0];
@@ -48,27 +63,28 @@ prompt([
             initial: 3000,
             validate: value => {
                 const port = parseInt(value);
-                if (isNaN(port) || port < 1 || port > 65535) {
-                    return 'Veuillez saisir un numéro de port valide.';
+                if (isNaN(port) || port < 1000 || port > 9999) {
+                    return "veuillez saisir un numéro de port valide"";
                 }
                 return true;
             }
         },
+
         {
             type: "select",
             name: "backend_lang",
-            message: "\nquel langage voulez-vous utiliser pour votre back-end ?",
+            message: "\nQuel langage voulez-vous utiliser pour votre back-end ?",
             choices: ["Node.js avec Express", "Node.js avec Koa", "PHP", "PHP avec Laravel", "PHP avec Symfony", "Django", "Flask"],
         },
         {
             type: "input",
             name: "backend_port",
-            message: "\nsur quel port voulez-vous lancer votre back-end ?",
+            message: "\nSur quel port voulez-vous lancer votre back-end ?",
             initial: 8000,
             validate: value => {
                 const port = parseInt(value);
-                if (isNaN(port) || port < 1 || port > 65535) {
-                    return 'Veuillez saisir un numéro de port valide.';
+                if (isNaN(port) || port < 1000 || port > 9999) {
+                    return "veuillez saisir un numéro de port valide";
                 }
                 return true;
             }
@@ -76,7 +92,7 @@ prompt([
         {
             type: "select",
             name: "db_choice",
-            message: "\nvoulez-vous ajouter une base de données ?",
+            message: "\nVoulez-vous ajouter une base de données ?",
             choices: ["MySQL", "PostgreSQL", "MongoDB", "SQLite", "non"],
         },
     ]);
@@ -94,7 +110,7 @@ prompt([
             {
                 type: "input",
                 name: "db_username",
-                message: "\nentrez le nom d\'utilisateur pour la base de données :",
+                message: "\nentrez le nom d'utilisateur pour la base de données :",
             },
             {
                 type: "password",
@@ -130,13 +146,13 @@ prompt([
         installDependencies(answers);
     }
 }).catch(error => {
-    console.error("\nerreur saisie réponses : ", error);
+    console.error("\nerreur réponses : ", error);
 });
 
 function createHtmlCssFiles(folderName) {
-    fs.writeFileSync(`${folderName}/index.html`, "<!DOCTYPE html>\n<html>\n<head>\n\t<title>bienvenu</title>\n\t<link rel='stylesheet' href='index.css'>\n</head>\n<body>\n\t<h1>et tout et tout</h1>\n</body>\n</html>");
+    fs.writeFileSync(`${folderName}/index.html`, "<!DOCTYPE html>\n<html>\n<head>\n\t<title>Bienvenue</title>\n\t<link rel='stylesheet' href='index.css'>\n</head>\n<body>\n\t<h1>Et tout et tout</h1>\n</body>\n</html>");
     fs.writeFileSync(`${folderName}/index.css`, "body { font-family: Arial, sans-serif; }");
-    console.log(`\nles fichiers index.html et index.css créés dans : ${folderName}`);
+    console.log(`\nles fichiers index.html et index.css créés dans : ${folderName}\n`);
 }
 
 function createPhpDbFile(dbAnswers, folderName) {
@@ -152,13 +168,14 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // gérer les erreurs et tout et tout
 if ($conn->connect_error) {
-    die("connexion échouée: " . $conn->connect_error);
+    die("Connexion échouée: " . $conn->connect_error);
 }
-echo "connexion ok";
+echo "Connexion ok";
 ?>`;
     fs.writeFileSync(`${folderName}/dbConnect.php`, dbConnectContent);
-    console.log(`\nle fichier de connexion à la base de données a été créé dans : ${folderName}/dbConnect.php`);
+    console.log(`\nle fichier de connexion à la base de données a été créé dans : ${folderName}/dbConnect.php\n`);
 }
+
 function installDependencies(answers) {
     console.log("\ninstallation des dépendances...\n");
     const { frontend_lang, backend_lang } = answers;
@@ -176,18 +193,18 @@ function installDependencies(answers) {
             // Vous pouvez ajouter ici des actions spécifiques pour l'installation des dépendances HTML + CSS si nécessaire
         }
     } catch (error) {
-        console.error("Erreur lors de l'installation des dépendances front-end : ", error);
+        console.error("erreur lors de l'installation des dépendances front-end : ", error);
     }
 
     // Back-end
     try {
         if (backend_lang.includes('Node.js')) {
-            console.log(`Installation de ${backend_lang} dans le dossier '${folders.backEnd}'...`);
+            console.log(`installation de ${backend_lang} dans le dossier '${folders.backEnd}'...`);
             execSync(`npm init -y`, { stdio: 'inherit', cwd: folders.backEnd });
             const package = backend_lang.includes('Express') ? 'express' : 'koa';
             execSync(`npm install ${package}`, { stdio: 'inherit', cwd: folders.backEnd });
         } else if (backend_lang.includes('PHP')) {
-            console.log(`Installation de ${backend_lang} dans le dossier '${folders.backEnd}'...`);
+            console.log(`installation de ${backend_lang} dans le dossier '${folders.backEnd}'...`);
             if (!fs.existsSync(folders.backEnd)) {
                 fs.mkdirSync(folders.backEnd);
             }
@@ -204,12 +221,14 @@ function installDependencies(answers) {
     }
 
     console.log("\ndépendances installées avec succès, et tout et tout");
+    startServers(answers);
 }
+
 
 function createDbConfigFile(answers, dbAnswers) {
     const { db_choice } = answers;
     const { db_username, db_password, db_name, db_config_file, db_folder } = dbAnswers;
-    const dbConfigPath = db_folder === 'Racine' ? '.' : db_folder;
+    const dbConfigPath = db_folder === 'à la racine' ? '.' : folders.backEnd;
     const dbConfigContent = `
 const dbConfig = {
     type: '${db_choice}',
@@ -222,5 +241,46 @@ module.exports = dbConfig;
     `.trim();
 
     fs.writeFileSync(`${dbConfigPath}/${db_config_file}.js`, dbConfigContent);
-    console.log(`\nle fichier de configuration de la base de données créé dans : ${dbConfigPath}/${db_config_file}.js`);
+    console.log(`\nle fichier de configuration de la base de données a été créé dans : ${dbConfigPath}/${db_config_file}.js\n`);
+}
+
+// démarrage serveurs
+function startServers(answers) {
+    console.log("\nlancement des serveurs... patientez..... ;) ;)\n");
+
+    const { execSync } = require('child_process');
+    const frontEndCommand = `cd ${folders.frontEnd} && `;
+    const frontEndPort = ports.frontEnd;
+    let frontEndStartCommand = '';
+    if (answers.frontend_lang === "React avec Vite") {
+        frontEndStartCommand = `npm install && npm run dev -- --port ${frontEndPort}`;
+    } else if (answers.frontend_lang === "Vue") {
+        frontEndStartCommand = `npm run serve -- --port ${frontEndPort}`;
+    } else if (answers.frontend_lang === "HTML + CSS") {
+        frontEndStartCommand = `python3 -m http.server ${frontEndPort}`;
+    }
+    execSync(frontEndCommand + frontEndStartCommand, { stdio: 'inherit' });
+    const backEndCommand = `cd ${folders.backEnd} && `;
+    const backEndPort = ports.backEnd;
+    let backEndStartCommand = '';
+    if (answers.backend_lang.includes('Node.js')) {
+        backEndStartCommand = `npm install && npm start -- --port ${backEndPort}`;
+    } else if (answers.backend_lang.includes('PHP')) {
+        backEndStartCommand = `php -S localhost:${backEndPort} -t public`;
+    }
+    execSync(backEndCommand + backEndStartCommand, { stdio: 'inherit' });
+
+
+    // ouvre les navigateurs
+    setTimeout(() => {
+        const { execSync } = require('child_process');
+        const open = require('open');
+
+        const openCommand = process.platform === 'win32' ? 'start' : process.platform === 'darwin' ? 'open' : 'xdg-open';
+        const frontEndURL = `http://localhost:${frontEndPort}`;
+        const backEndURL = `http://localhost:${backEndPort}`;
+
+        execSync(`${openCommand} ${frontEndURL}`);
+        execSync(`${openCommand} ${backEndURL}`);
+    }, 2000);
 }
