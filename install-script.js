@@ -225,7 +225,6 @@ function installDependencies(answers) {
             execSync(`npm init vue@latest ${folders.frontEnd}`, { stdio: 'inherit' });
         } else if (frontend_lang === 'HTML + CSS') {
             console.log(`initialisation du projet HTML + CSS dans le dossier '${folders.frontEnd}'...`);
-            // Vous pouvez ajouter ici des actions spécifiques pour l'installation des dépendances HTML + CSS si nécessaire
         }
     } catch (error) {
         console.error("erreur lors de l'installation des dépendances front-end : ", error);
