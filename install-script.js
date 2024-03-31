@@ -132,8 +132,7 @@ prompt([
 }).then(answers => {
     ports.frontEnd = answers.frontend_port;
     ports.backEnd = answers.backend_port;
-
-    // Reste du code à ajouter ici...
+    
 
 }).catch(error => {
     console.error("\nErreur réponses : ", error);
