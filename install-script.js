@@ -4,7 +4,7 @@ const fs = require('fs');
 const chalk = require('chalk');
 
 
-console.log("🌟 bienvenue dans le script de configuration de l'environnement d'un projet dev 🌟\n");
+console.log("🌟 bienvenue dans le script de configuration de l'environnement d'un projet dev\n");
 console.log("ce script sert à automatiser l'installation des différents langages avec leurs packages.\n");
 
 // function pour ouvrir une URL dans le navigateur
@@ -35,7 +35,7 @@ const langColors = {
 };
 
 const frameworkColors = {
-    "Node.js avec Express": chalk.blue,
+    "Node.js avec Express": chalk.pink,
     "Node.js avec Koa": chalk.green,
     "PHP": chalk.magenta,
     "PHP avec Laravel": chalk.red,
