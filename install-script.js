@@ -137,7 +137,7 @@ prompt([
     ports.backEnd = answers.backend_port;
 
     if (answers.frontend_lang === "HTML + CSS") {
-        createHtmlCssFiles(folders.frontEnd);
+        createFilesForHTMLandCSS(folders.frontEnd);
     }
 
     if (answers.db_choice !== "Non") {
@@ -184,7 +184,7 @@ prompt([
 }).catch(error => {
     console.error("\nErreur réponses : ", error);
 });
-function createHtmlCssFiles(folderName) {
+function createFilesForHTMLandCSS(folderName) {
     fs.writeFileSync(`${folderName}/index.html`, "<!DOCTYPE html>\n<html>\n<head>\n\t<title>Bienvenue</title>\n\t<link rel='stylesheet' href='index.css'>\n</head>\n<body>\n\t<h1>Et tout et tout</h1>\n</body>\n</html>");
     fs.writeFileSync(`${folderName}/index.css`, "body { font-family: Arial, sans-serif; }");
     console.log(`\nles fichiers index.html et index.css créés dans : ${folderName}\n`);
