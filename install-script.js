@@ -1,6 +1,8 @@
 const { prompt } = require('enquirer');
 const { execSync } = require('child_process');
 const fs = require('fs');
+const chalk = require('chalk');
+
 
 console.log("🌟 bienvenue dans le script de configuration de l'environnement d'un projet dev 🌟\n");
 console.log("ce script sert à automatiser l'installation des différents langages avec leurs packages.\n");
@@ -23,6 +25,25 @@ function openURL(url) {
 let folders = {};
 let ports = {};
 
+const langColors = {
+    "HTML + CSS": chalk.magenta,
+    "React avec Vite": chalk.green,
+    "React": chalk.cyan,
+    "Vue": chalk.yellow,
+    "Angular": chalk.red,
+    "Svelte": chalk.blue
+};
+
+const frameworkColors = {
+    "Node.js avec Express": chalk.blue,
+    "Node.js avec Koa": chalk.green,
+    "PHP": chalk.magenta,
+    "PHP avec Laravel": chalk.red,
+    "PHP avec Symfony": chalk.yellow,
+    "Django": chalk.blue,
+    "Flask": chalk.cyan
+};
+
 prompt([
     {
         type: "numeral",
@@ -42,7 +63,7 @@ prompt([
 
     folderNames.forEach(folderName => {
         fs.mkdirSync(folderName, { recursive: true });
-        console.log(`Le dossier ${folderName} a été créé.\n`);
+        console.log(`le dossier ${folderName} a été créé.\n`);
     });
 
     folders.frontEnd = folderNames[0];
@@ -54,7 +75,14 @@ prompt([
             type: "select",
             name: "frontend_lang",
             message: "\nquel langage voulez-vous utiliser pour votre front-end ?",
-            choices: ["HTML + CSS", "React avec Vite", "React", "Vue", "Angular", "Svelte"],
+            choices: [
+                { name: "HTML + CSS", value: "HTML + CSS" },
+                { name: "React avec Vite", value: "React avec Vite" },
+                { name: "React", value: "React" },
+                { name: "Vue", value: "Vue" },
+                { name: "Angular", value: "Angular" },
+                { name: "Svelte", value: "Svelte" }
+            ].map(choice => ({ name: langColors[choice.name](choice.name), value: choice.value })),
         },
         {
             type: "input",
@@ -74,7 +102,15 @@ prompt([
             type: "select",
             name: "backend_lang",
             message: "\nquel langage voulez-vous utiliser pour votre back-end ?",
-            choices: ["Node.js avec Express", "Node.js avec Koa", "PHP", "PHP avec Laravel", "PHP avec Symfony", "Django", "Flask"],
+            choices: [
+                { name: "Node.js avec Express", value: "Node.js avec Express" },
+                { name: "Node.js avec Koa", value: "Node.js avec Koa" },
+                { name: "PHP", value: "PHP" },
+                { name: "PHP avec Laravel", value: "PHP avec Laravel" },
+                { name: "PHP avec Symfony", value: "PHP avec Symfony" },
+                { name: "Django", value: "Django" },
+                { name: "Flask", value: "Flask" }
+            ].map(choice => ({ name: frameworkColors[choice.name](choice.name), value: choice.value })),
         },
         {
             type: "input",
@@ -93,7 +129,7 @@ prompt([
             type: "select",
             name: "db_choice",
             message: "\nvoulez-vous ajouter une base de données ?",
-            choices: ["MySQL", "PostgreSQL", "MongoDB", "SQLite", "non"],
+            choices: ["MySQL", "PostgreSQL", "MongoDB", "SQLite", "Non"],
         },
     ]);
 }).then(answers => {
@@ -104,7 +140,7 @@ prompt([
         createHtmlCssFiles(folders.frontEnd);
     }
 
-    if (answers.db_choice !== "non") {
+    if (answers.db_choice !== "Non") {
         console.log("");
         return prompt([
             {
@@ -115,7 +151,7 @@ prompt([
             {
                 type: "password",
                 name: "db_password",
-                message: '\nentrez le mot de passe pour la base de données :',
+                message: "\nentrez le mot de passe pour la base de données :",
             },
             {
                 type: "input",
@@ -132,7 +168,7 @@ prompt([
                 type: "select",
                 name: "db_folder",
                 message: "\noù voulez-vous créer le fichier de configuration de la base de données ?",
-                choices: ["à la racine", folders.backEnd],
+                choices: ["À la racine", folders.backEnd],
             },
         ]).then(dbAnswers => {
             if (answers.backend_lang === "PHP") {
@@ -146,9 +182,8 @@ prompt([
         installDependencies(answers);
     }
 }).catch(error => {
-    console.error("\nerreur réponses : ", error);
+    console.error("\nErreur réponses : ", error);
 });
-
 function createHtmlCssFiles(folderName) {
     fs.writeFileSync(`${folderName}/index.html`, "<!DOCTYPE html>\n<html>\n<head>\n\t<title>Bienvenue</title>\n\t<link rel='stylesheet' href='index.css'>\n</head>\n<body>\n\t<h1>Et tout et tout</h1>\n</body>\n</html>");
     fs.writeFileSync(`${folderName}/index.css`, "body { font-family: Arial, sans-serif; }");
