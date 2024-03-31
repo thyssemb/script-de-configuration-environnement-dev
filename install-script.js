@@ -132,7 +132,12 @@ prompt([
 }).then(answers => {
     ports.frontEnd = answers.frontend_port;
     ports.backEnd = answers.backend_port;
-    
+
+    installDependencies(answers);
+    if (answers.db_choice !== "Non") {
+        createDbConfigFile(answers, dbAnswers);
+    }
+
 
 }).catch(error => {
     console.error("\nErreur réponses : ", error);
@@ -168,7 +173,7 @@ function installDependencies(answers) {
     console.log("\ninstallation des dépendances...\n");
     const { frontend_lang, backend_lang } = answers;
 
-    // Front-end
+    // front-end
     try {
         if (frontend_lang === "React avec Vite") {
             console.log(`initialisation du projet React avec Vite dans le dossier '${folders.frontEnd}'...`);
