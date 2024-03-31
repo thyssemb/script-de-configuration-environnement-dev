@@ -137,7 +137,12 @@ prompt([
     if (answers.db_choice !== "Non") {
         createDbConfigFile(answers, dbAnswers);
     }
-
+    if (answers.backend_lang.includes('PHP') && answers.db_choice !== "Non") {
+        createPhpDbFile(dbAnswers, folders.backEnd);
+    }
+    if (answers.frontend_lang === 'HTML + CSS') {
+        createFilesForHTMLandCSS(folders.frontEnd);
+    }
 
 }).catch(error => {
     console.error("\nErreur réponses : ", error);
