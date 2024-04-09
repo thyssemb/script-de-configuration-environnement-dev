@@ -4,6 +4,7 @@ const fs = require('fs');
 
 const installScript = fs.readFileSync('installer.js', 'utf-8');
 
+// script test
 
 console.log("🌟 bienvenue dans le script de configuration de l'environnement d'un projet dev 🌟\n");
 console.log("ce script sert à automatiser l'installation des différents langages avec leurs packages.\n");
