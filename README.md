@@ -24,7 +24,7 @@ de set up une partie de l'environnement à la place de l'utilisateur, et lance l
 it allows you to choose your language, your number of folders, your framework, your database, and configure your ports. <br> it sets up part of the environment in place of the user, and launches the servers in the terminal.</p>
 
 
-<h2> 🚀 &nbsp;installation</h2>
+<h2> 🚀 &nbsp;install</h2>
 <p align="left">
     git clone <br>
     <code>npm install</code> <br>
