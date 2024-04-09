@@ -2,7 +2,7 @@
 
 <center><h1>☁️ script de configuration d'environnement de développement</h1></center>
 <p>un nom assez barbare pour un projet qui n'en est pas un! <br>ce script a pour but d'automatiser la configuration des environnements de développement. 
-il permet de choisir son langage, son nombre de dossiers, ses framework, sa base de données, configurer ses ports. <br> il se charge
+il permet de choisir son langage, son nombre de dossiers, ses framework, sa base de données, et configurer ses ports. <br> il se charge
 de set up une partie de l'environnement à la place de l'utilisateur, et lance les serveurs dans le terminal.</p>
 
 
