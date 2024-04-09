@@ -3,6 +3,8 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const chalk = require('chalk');
 
+// script ok pour test git
+
 console.log("bienvenue dans le script de configuration de l'environnement d'un projet dev 🌟\n");
 console.log("ce script sert à automatiser l'installation des différents langages avec leurs packages.\n");
 
